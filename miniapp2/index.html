@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class= "title">Derivative Calculator</div>
+    <div class= "input-container">
+        <p class= "text">y(x)= </p>
+        <input name="input" class= "input bordered" placeholder="e.g. sin(x)*cos(x)" id= "input"/>
+    </div>
+    <button class= "button bordered" id= "button">Calculate</button>
+    <div class= "result-container bordered"></div>
+</body>
+
+<style>
+    * {
+        font-family:'Courier New', Courier, monospace;
+    }
+    body {
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        margin: 0px;
+        padding: 0px;
+        justify-content: center;
+        align-items: center;
+    }
+    .title {
+        height: 30px;
+        font-size: 25px;
+        font-weight: bold;
+        color: #333333;
+    }
+    .input-container {
+        height: 200px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+    .text {
+        font-size: 20px;
+        color: black;
+    }
+    .input {
+        height: 40px;
+        width: min(65vw, 660px);
+        padding: 5px 0px 5px 10px;
+        font-size: 20px;
+        margin-left: 20px;
+    }
+    .button {
+        height: 40px;
+        width: 120px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        color: black;
+        background-color: #aaaaaa;
+    }
+    .button:active {
+        background-color: #dddddd;
+    }
+    .result-container {
+        height: 200px;
+        width: min(700px, 80vw);
+        padding: 10px;
+        margin: 30px 0px 0px 0px;
+    }
+    .bordered {
+        border-radius: 5px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: #333333;
+    }
+</style>
+
+<script>
+    class MathSymbol {
+        constructor(sym, arg, type) {
+            this.sym= sym;
+            this.arg= arg;
+            this.type= type;
+            this.isComposite= false;
+        }
+
+        diff(respSym) {
+            if(this.type== "fun") {
+                return getDerivative(this.sym, this.arg);
+            } else if(this.type== "var") {
+                if(this.sym== respSym) {
+                    return MathSymbol("1", 1, "var");
+                } else {
+                    return MathSymbol("0", 0, "zero");
+                }
+            } else if(this.type== "bin") {
+                return this;
+            } else {
+                return MathSymbol("", 0, "null");
+            }
+        }
+
+        getDerivative(sym, arg) {
+            switch(sym) {
+                case "sin": return MathSymbol("cos", arg, "fun");
+                case "cos": return MathSymbol("sin", -arg, "fun");
+                case "pow": return MathSymbol("pow", arg- 1, "fun");
+                case "log": return MathSymbol("pow", -1, "fun");
+            }
+        } 
+    }
+
+    class Composite {
+        constructor(f, g) {
+            this.f= f;
+            this.g= g;
+            this.isComposite= true;
+        }
+
+        diff(respSym) {
+            var df= this.f.diff(respSym);
+            var g= this.g; 
+            var resProd= Product([Composite(df, g)], [0]);
+            var count= 0;
+            while(g.isComposite) {
+                df= g.diff(respSym).composites[0].f;
+                g= g.g;
+                count++;
+                resProd.addComposite(Composite(df, g), count);
+            }
+            return resProd;
+        }
+    }
+
+    class Product {
+        constructor(composites, indexes) {
+            this.composites= composites;
+            this.indexes= indexes;
+        }
+
+        addComposite(composite, index) {
+            this.composites.push(composite);
+            this.indexes.push(index);
+        }
+
+        diff(resSym) {
+            const len= this.composites.length;
+            var prods= [];
+            var resComps= [];
+            var indexes= [];
+            for(let i=0; i< len; i++) {
+                resComps.push(this.composites[i].diff(resSym));
+                for(let j=0; j< len; j++) {
+                    if(i!=j) {
+                        res.push(this.composites[j]);
+                        indexes.push(j);
+                    }
+                }
+                const resProd= Product(resComps, indexes);
+                prods.push(resProd);
+                resComps= [];
+            }
+            return Sum(prods);
+        }
+    }
+
+    class Sum {
+        constructor(prods) {
+            this.prods= prods;
+        }
+
+        clean() {
+            var newProds= [];
+            for(let i=0; i< this.prods.length; i++) {
+                var param= true;
+                const prod= this.prods[i];
+                for(let j=0; j< prod.composites.length; i++) {
+                    const comp= prod.composites[j];
+                    f= comp.g;
+                    while(f.isComposite) {
+                        f= g.g;
+                    }
+                    if(f.type=="zero") {
+                        param= false;
+                    }
+                }
+                if(param) {
+                    newProds.push(prod);
+                }
+            }
+            this.prods= newProds;
+        }
+    }
+
+    class Syntaxt {
+        constructor(string) {
+            this.string= string;
+        } 
+
+        construct() {
+            
+        }
+
+    }
+
+</script>
+</html>

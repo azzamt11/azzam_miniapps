@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Count from 1 to N</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #count-display {
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Count from 1 to N</h1>
+    <label for="countTo">Enter a number (N):</label>
+    <input type="number" id="countTo" min="1">
+    <button id="startCounting">Start Counting</button>
+    <div id="count-display"></div>
+
+    <script>
+        document.getElementById("startCounting").addEventListener("click", function() {
+            // Get the value of 'N' from the input
+            const n = parseInt(document.getElementById("countTo").value);
+
+            if (!isNaN(n) && n >= 1) {
+                countFrom1ToN(n);
+            } else {
+                alert("Please enter a valid positive integer.");
+            }
+        });
+
+        function countFrom1ToN(n) {
+            const countDisplay = document.getElementById("count-display");
+            let count = 1;
+
+            // Start counting with a 1-second interval
+            const intervalId = setInterval(function() {
+                if (count <= n) {
+                    countDisplay.textContent = count;
+                    count++;
+                } else {
+                    clearInterval(intervalId); // Stop the counting when it reaches 'n'
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class= "title">Weird Calculator</div>
+    <div class= "input-container">
+        <p class= "text">in= </p>
+        <input name="input" class= "input bordered" placeholder="e.g. sin(x)*cos(x)" id= "input"/>
+    </div>
+    <button class= "button bordered" id= "button">Calculate</button>
+    <div class= "result-container bordered"></div>
+</body>
+
+<style>
+    * {
+        font-family:'Courier New', Courier, monospace;
+    }
+    body {
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        margin: 0px;
+        padding: 0px;
+        justify-content: center;
+        align-items: center;
+    }
+    .title {
+        height: 30px;
+        font-size: 25px;
+        font-weight: bold;
+        color: #333333;
+    }
+    .input-container {
+        height: 200px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+    .text {
+        font-size: 20px;
+        color: black;
+    }
+    .input {
+        height: 40px;
+        width: min(65vw, 660px);
+        padding: 5px 0px 5px 10px;
+        font-size: 20px;
+        margin-left: 20px;
+    }
+    .button {
+        height: 40px;
+        width: 120px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        color: black;
+        background-color: #aaaaaa;
+    }
+    .button:active {
+        background-color: #dddddd;
+    }
+    .result-container {
+        height: 200px;
+        width: min(700px, 80vw);
+        padding: 10px;
+        margin: 30px 0px 0px 0px;
+    }
+    .bordered {
+        border-radius: 5px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: #333333;
+    }
+</style>
+
+<script>
+    class NewObj {
+        
+    }
+</script>
+</html>
